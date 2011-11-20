@@ -19,5 +19,5 @@
 	       :com.gigamonkeys.test-framework
 	       :com.gigamonkeys.pathnames
 	       :com.gigamonkeys.utilities
-               :text-output
-               :text-languages))
+               :monkeylib-text-output
+               :monkeylib-text-languages))

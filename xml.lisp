@@ -3,14 +3,27 @@
 
 (in-package :monkeylib-html)
 
+(defparameter *element-escapes* "<>&")
+(defparameter *attribute-escapes* "<>&\"'")
+
+;;; FIXME: The name case issue is kind of goofly with XML. For
+;;; embedded code (e.g. (xml (:foo whatever)) the identifiers will be
+;;; upcased by the Lisp reader so we usually want to just downcase
+;;; them. But since XML is actually case sensitive we may sometimes
+;;; want to preserve case. When we read sexps from a file probably the
+;;; best thing is to read case-sensitively and then leave the name
+;;; alone on output.
+
 (defclass xml (language)
   ((name-converter :initarg :name-converter :initform #'string-downcase :accessor name-converter))
   (:default-initargs
-   :special-operator-symbol 'xml-special-operator
-    :macro-symbol 'xml-macro
-    :input-readtable (case-preserving-readtable)
+   :input-readtable (case-preserving-readtable)
     :input-package (find-package :keyword)
     :output-file-type "xml"))
+
+(defmethod initialize-instance :after ((xml xml) &key &allow-other-keys)
+  (push 'xml-special-operator (special-operator-symbols xml))
+  (push 'xml-macro (macro-symbols xml)))
 
 (defmacro define-xml-language (name &body element-defs)
   (let ((block-elements (cdr (assoc :block-elements element-defs)))
@@ -26,8 +39,6 @@
            (new-env
             'preserve-whitespace-elements ',preserve-whitespace-elements
             (call-next-method))))))))
-
-(defparameter *element-escapes* "<>&")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Public API
@@ -129,14 +140,17 @@
   (when (or (paragraph-element-p tag environment) (block-element-p tag environment))
     (freshline processor)))
 
+(defmethod top-level-environment ((language xml))
+  (new-env 'escapes *element-escapes* nil))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; File compiler implementation
 
 (defmethod comment ((language xml) text)
   (format nil "~&<!--~&~a~&-->" text))
 
-(defmethod top-level-environment ((language xml))
-  (new-env 'escapes *element-escapes* nil))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; Environment objects. We just use a simple alist.
 
 (defun new-env (key value env)
   (acons key value env))
@@ -149,7 +163,7 @@
   (environment-value 'escapes env))
 
 (defun in-attribute (env)
-  (new-env 'in-attribute t (new-env 'escapes "<>&\"'" env)))
+  (new-env 'in-attribute t (new-env 'escapes *attribute-escapes* env)))
 
 (defun in-attribute-p (env)
   (environment-value 'in-attribute env))
@@ -176,12 +190,12 @@
   (multiple-value-bind (attributes parameters)
       (parse-xml-macro-lambda-list parameters)
     (if attributes
-      (generate-macro-with-attributes name attributes parameters body)
+      (generate-xml-macro-with-attributes name 'xml-macro attributes parameters body)
       `(define-macro ,name xml-macro (,@parameters) ,@body))))
 
-(defun generate-macro-with-attributes (name attributes parameters body)
+(defun generate-xml-macro-with-attributes (name macro-symbol attributes parameters body)
   (with-gensyms (form all tag tag-body)
-    `(define-macro ,name xml-macro (&whole ,form &body ,all)
+    `(define-macro ,name ,macro-symbol (&whole ,form &body ,all)
        (declare (ignore ,all))
        (multiple-value-bind (,tag ,attributes ,tag-body) (parse-cons-form ,form)
          (declare (ignore ,tag))

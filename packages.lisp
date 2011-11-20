@@ -8,18 +8,16 @@
 	:com.gigamonkeys.utilities
         :com.gigamonkeys.test
         :com.gigamonkeys.pathnames
-	:text-output
-	:text-languages)
+	:monkeylib-text-output
+	:monkeylib-text-languages)
   (:export
    :&attributes
-   :cons-form-p
    :define-html-macro
    :define-html-special-operator
    :emit-html
-   :emit-xhtml
+   :emit-xml
    :html
-   :xhtml
-   :in-html-style))
+   :xml))
 
 
 

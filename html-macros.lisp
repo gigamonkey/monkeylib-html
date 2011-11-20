@@ -1,6 +1,5 @@
-;;
-;; Copyright (c) 2005, Gigamonkeys Consulting All rights reserved.
-;;
+;;; Copyright (c) 2005-2011, Peter Seibel.
+;;; All rights reserved. See COPYING for details.
 
 (in-package :monkeylib-html)
 
