@@ -1,4 +1,4 @@
-(in-package :com.gigamonkeys.foo.xml)
+(in-package :monkeylib-html)
 
 (defun escape-char (char)
   (case char

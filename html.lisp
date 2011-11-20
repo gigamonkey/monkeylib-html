@@ -1,8 +1,7 @@
-;;
-;; Copyright (c) 2005-2007, Gigamonkeys Consulting All rights reserved.
-;;
+;;; Copyright (c) 2005-2011, Peter Seibel.
+;;; All rights reserved. See COPYING for details.
 
-(in-package :com.gigamonkeys.foo.xml)
+(in-package :monkeylib-html)
 
 (defclass xhtml (xml)
   ()
@@ -49,19 +48,19 @@
 
 (defmethod top-level-environment ((language xhtml))
   (new-env
-   'block-elements 
+   'block-elements
    '(:body :colgroup :div :dl :fieldset :form :head :html :map :noscript
      :object :ol :optgroup :pre :script :select :style :table :tbody
      :tfoot :thead :tr :ul)
-   (new-env 
+   (new-env
     'paragraph-elements
     '(:area :base :blockquote :br :button :caption :col :dd :div :dt :h1
       :h2 :h3 :h4 :h5 :h6 :hr :input :li :link :meta :option :p :param
       :td :textarea :th :title)
-    (new-env 
+    (new-env
      'preserve-whitespace-elements
      '(:pre :script :style :textarea)
-     (new-env 
+     (new-env
       'inline-elements
       '(:a :abbr :acronym :address :b :bdo :big :cite :code :del :dfn :em
 	:i :img :ins :kbd :label :legend :q :samp :small :span :strong :sub
@@ -72,8 +71,8 @@
        (call-next-method)))))))
 
 (defmethod top-level-environment ((language html))
-  (new-env 
-   'empty-elements 
+  (new-env
+   'empty-elements
    '(:area :base :br :col :hr :img :input :link :meta :param)
    (call-next-method)))
 
@@ -134,6 +133,5 @@
        (process language processor exp (in-attribute env))))
 
 (define-html-special-operator :newline (language processor)
-  (declare (ignore language))
   (newline processor))
 

@@ -1,8 +1,8 @@
-(in-package :com.gigamonkeys.foo.xml)
+(in-package :monkeylib-html)
 
 (defun html->string (sexp)
   (with-output-to-string (s)
-    (with-foo-output (s :pretty t)
+    (with-text-output (s :pretty t)
       (emit-html sexp))))
 
 (defparameter *testfiles* #p"./html-testfiles/")
@@ -35,7 +35,7 @@
 	(sexp (with-open-file (in input) (read in))))
     (check (string= (html->string sexp) expected))))
 
-(defun look (number) 
+(defun look (number)
   (let* ((input (make-pathname :directory '(:relative "html-testfiles") :name (format nil "test~3,'0d" number) :type "fhtml"))
 	 (output (make-pathname :type "html" :defaults input)))
     (format t "~%fhtml:~%----------~%")
@@ -60,7 +60,7 @@
       (prin1 sexp out)))
   (look number))
 
-(defun ok (number) 
+(defun ok (number)
   (let* ((input (make-pathname :directory '(:relative "html-testfiles") :name (format nil "test~3,'0d" number) :type "fhtml"))
 	 (output (make-pathname :type "html" :defaults input)))
     (with-open-file (out output :direction :output :if-exists :supersede)

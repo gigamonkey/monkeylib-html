@@ -1,8 +1,7 @@
-;;
-;; Copyright (c) 2005-2007, Gigamonkeys Consulting All rights reserved.
-;;
+;;; Copyright (c) 2005-2011, Peter Seibel.
+;;; All rights reserved. See COPYING for details.
 
-(in-package :com.gigamonkeys.foo.xml)
+(in-package :monkeylib-html)
 
 (defclass xml (language)
   ((name-converter :initarg :name-converter :initform #'string-downcase :accessor name-converter))
@@ -233,5 +232,4 @@
        (process language processor exp (in-attribute env))))
 
 (define-xml-special-operator :newline (language processor)
-  (declare (ignore language))
   (newline processor))

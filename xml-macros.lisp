@@ -1,16 +1,15 @@
-;;
-;; Copyright (c) 2005-2007, Gigamonkeys Consulting All rights reserved.
-;;
+;;; Copyright (c) 2005-2011, Peter Seibel.
+;;; All rights reserved. See COPYING for details.
 
-(in-package :com.gigamonkeys.foo.xml)
+(in-package :monkeylib-html)
 
 (define-xml-macro :? (name &rest attrs)
-  `(:progn 
+  `(:progn
     (:noescape (:format "<?~(~a~) ~@{~(~a~)=\"~a\"~^ ~}?>" ,name ,@attrs))
     (:newline)))
 
 (define-html-macro :? (name &rest attrs)
-  `(:progn 
+  `(:progn
     (:noescape (:format "<?~a ~@{~(~a~)=\"~a\"~^ ~}?>" ,name ,@attrs))
     (:newline)))
 
