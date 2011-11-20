@@ -13,7 +13,6 @@
    (:file "html"             :depends-on ("packages""string-escaping" "xml"))
    (:file "html-tests"       :depends-on ("packages" "html"))
    (:file "xml"              :depends-on ("packages"))
-   (:file "html-macros"      :depends-on ("packages" "html"))
    (:file "xml-macros"       :depends-on ("packages" "xml")))
   :depends-on (:com.gigamonkeys.macro-utilities
 	       :com.gigamonkeys.test-framework
