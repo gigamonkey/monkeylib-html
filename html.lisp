@@ -13,6 +13,20 @@
   (push 'html-special-operator (special-operator-symbols html))
   (push 'html-macro (macro-symbols html)))
 
+(define-xml-language xhtml
+  (:block-elements
+   :body :colgroup :div :dl :fieldset :form :head :html :map :noscript
+   :object :ol :optgroup :pre :script :select :style :table :tbody
+   :tfoot :thead :tr :ul)
+  (:paragraph-elements
+   :area :base :blockquote :br :button :caption :col :dd :div :dt :h1
+   :h2 :h3 :h4 :h5 :h6 :hr :input :li :link :meta :option :p :param
+   :td :textarea :th :title)
+  (:preserve-whitespace-elements
+   :pre :script :style :textarea))
+
+(defun emit-xhtml (sexp) (emit-for-language 'xhtml sexp))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Public API
 

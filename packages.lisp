@@ -14,10 +14,13 @@
    :&attributes
    :define-html-macro
    :define-html-special-operator
-   :emit-html
+   :define-xml-language
    :emit-xml
+   :emit-html
+   :emit-xhtml
+   :xml
    :html
-   :xml))
+   :xhtml))
 
 
 
