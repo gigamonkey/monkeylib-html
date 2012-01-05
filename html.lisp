@@ -30,6 +30,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; Public API
 
+(defmacro with-html-output ((stream &key (pretty t)) &body body)
+  `(with-text-output (,stream :pretty ,pretty)
+     (html ,@body)))
+
 (defun emit-html (sexp) (emit-for-language 'html sexp))
 
 (define-language-macro html)

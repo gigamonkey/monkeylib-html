@@ -4,12 +4,11 @@
 
 (defpackage :monkeylib-html
   (:use :common-lisp
-	:com.gigamonkeys.macro-utilities
-	:com.gigamonkeys.utilities
+        :com.gigamonkeys.utilities
         :com.gigamonkeys.test
         :com.gigamonkeys.pathnames
-	:monkeylib-text-output
-	:monkeylib-text-languages)
+        :monkeylib-text-output
+        :monkeylib-text-languages)
   (:export
    :&attributes
    :define-html-macro
@@ -20,7 +19,5 @@
    :emit-xhtml
    :xml
    :html
-   :xhtml))
-
-
-
+   :xhtml
+   :with-html-output))
