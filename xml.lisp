@@ -6,13 +6,13 @@
 (defparameter *element-escapes* "<>&")
 (defparameter *attribute-escapes* "<>&\"'")
 
-;;; FIXME: The name case issue is kind of goofly with XML. For
-;;; embedded code (e.g. (xml (:foo whatever)) the identifiers will be
-;;; upcased by the Lisp reader so we usually want to just downcase
-;;; them. But since XML is actually case sensitive we may sometimes
-;;; want to preserve case. When we read sexps from a file probably the
-;;; best thing is to read case-sensitively and then leave the name
-;;; alone on output.
+;;; FIXME: The name case issue is kind of goofy with XML. For embedded
+;;; code (e.g. (xml (:foo whatever)) the identifiers will be upcased
+;;; by the Lisp reader so we usually want to just downcase them. But
+;;; since XML is actually case sensitive we may sometimes want to
+;;; preserve case. When we read sexps from a file probably the best
+;;; thing is to read case-sensitively and then leave the name alone on
+;;; output.
 
 (defclass xml (language)
   ((name-converter :initarg :name-converter :initform #'string-downcase :accessor name-converter))
