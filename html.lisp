@@ -56,31 +56,29 @@
     (freshline processor)))
 
 (defmethod top-level-environment ((language html))
-  (new-env
-   'empty-elements
-   '(:area :base :br :col :hr :img :input :link :meta :param)
-   (new-env
-    'block-elements
-    '(:body :colgroup :div :dl :fieldset :form :head :html :map :noscript
-      :object :ol :optgroup :pre :script :select :style :table :tbody
-      :tfoot :thead :tr :ul)
-    (new-env
-     'paragraph-elements
-     '(:area :base :blockquote :br :button :caption :col :dd :div :dt :h1
-       :h2 :h3 :h4 :h5 :h6 :hr :input :li :link :meta :option :p :param
-       :td :textarea :th :title)
-     (new-env
-      'preserve-whitespace-elements
-      '(:pre :script :style :textarea)
-      (new-env
-       'inline-elements
-       '(:a :abbr :acronym :address :b :bdo :big :cite :code :del :dfn :em
-         :i :img :ins :kbd :label :legend :q :samp :small :span :strong :sub
-         :sup :tt :var)
-       (new-env
-        'non-empty-elements
-        '(:script :style :textarea)
-        (call-next-method))))))))
+  (let ((bindings
+         '((empty-elements
+            :area :base :br :col :embed :hr :img :input :keygen :link :meta
+            :param :source :track :wbr)
+           (block-elements
+            :body :colgroup :div :dl :fieldset :form :head :html :map :noscript
+            :object :ol :optgroup :pre :script :select :style :table :tbody
+            :tfoot :thead :tr :ul)
+           (paragraph-elements
+            :area :base :blockquote :br :button :caption :col :dd :div :dt :h1
+            :h2 :h3 :h4 :h5 :h6 :hr :input :li :link :meta :option :p :param
+            :td :textarea :th :title)
+           (preserve-whitespace-elements
+            :pre :script :style :textarea)
+           (inline-elements
+            :a :abbr :acronym :address :b :bdo :big :cite :code :del :dfn :em
+            :i :img :ins :kbd :label :legend :q :samp :small :span :strong :sub
+            :sup :tt :var)
+           (non-empty-elements
+            :script :style :textarea))))
+    (loop for (k . v) in (cons nil bindings)
+       for env = (call-next-method) then (new-env k v env)
+       finally (return env))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;; One element of environment specific to HTML.
